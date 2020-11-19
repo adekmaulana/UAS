@@ -53,6 +53,7 @@ def cetak_katalog():
 
 
 if __name__ == "__main__":
+    mode = "kurang"
     jumlah_beli = 0
     list_boxer = []
     list_harga = []
@@ -101,7 +102,7 @@ if __name__ == "__main__":
         list_ukuran.append(ukuran)
         jumlah_beli += 1
         # Kurangi stock pada database ketika logika di atas sudah terpenuhi
-        update_item(boxer, ukuran, banyak_beli)
+        update_item(boxer, ukuran, banyak_beli, mode)
         print()
         lagi = input("Tambah barang lagi? '[Y/N]': ")
         if lagi.upper() == "Y":

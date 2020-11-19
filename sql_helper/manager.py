@@ -26,9 +26,14 @@ def get_item(ID: str) -> Stock:
         SESSION.close()
 
 
-def update_item(boxer: Stock, ukuran: str, val: int) -> None:
+def update_item(boxer: Stock, ukuran: str, val: int, mode: str) -> None:
     try:
-        boxer.ukuran.get(ukuran)['quantity'] -= val
+        if mode == "kurang":
+            boxer.ukuran.get(ukuran)['quantity'] -= val
+        elif mode == "tambah":
+            boxer.ukuran.get(ukuran)['quantity'] += val
+        else:
+            return
         flag_modified(boxer, "ukuran")
         SESSION.add(boxer)
         SESSION.commit()
