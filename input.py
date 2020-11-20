@@ -113,10 +113,10 @@ if __name__ == "__main__":
     clear()
     d = datetime.datetime.now()
     no = sample(range(1, 100), 3)
-    order = f"#GG{no[0]}{no[1]}{no[2]}"
+    order = f"#AV{no[0]}{no[1]}{no[2]}"
     print("\t*===AVALON SPORTS===*\t")
     print()
-    print(f"{d:%d}/{d:%m}/{d:%y} {d:%H}:{d:%M}:{d:%S} {d:$p}\t  ORDER: {order}")
+    print(f"{d:%d}/{d:%m}/{d:%y} {d:%-I}:{d:%M}:{d:%S} {d:%p}\t  ORDER: {order}")
     print()
     total_bayar = []
     for i in range(jumlah_beli):
