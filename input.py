@@ -114,7 +114,7 @@ if __name__ == "__main__":
     d = datetime.datetime.now()
     no = sample(range(1, 100), 3)
     order = f"#GG{no[0]}{no[1]}{no[2]}"
-    print("\t*---Avalon Sports---*\t")
+    print("\t*===AVALON SPORTS===*\t")
     print()
     print(f"{d:%d}/{d:%m}/{d:%y} {d:%H}:{d:%M}:{d:%S} {d:$p}\t  ORDER: {order}")
     print()
