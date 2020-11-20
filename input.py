@@ -8,7 +8,7 @@ from shutil import get_terminal_size
 from sql_helper.manager import get_item, update_item
 
 
-def rupiah_format(angka, with_prefix=False, desimal=2):
+def rupiah_format(angka, with_prefix=True, desimal=0):
     locale.setlocale(locale.LC_NUMERIC, 'id_ID.UTF-8')
     rupiah = locale.format_string("%.*f", (desimal, angka), True)
     if with_prefix:
@@ -123,13 +123,13 @@ if __name__ == "__main__":
         jumlah = list_harga[i] * list_banyak[i]
         total_bayar.append(jumlah)
         print(f"\t{list_banyak[i]} {list_boxer[i].upper()} ({list_ukuran[i]})\t| "
-              f"{rupiah_format(jumlah, with_prefix=True, desimal=0)}")
+              f"{rupiah_format(jumlah)}")
     raw_total = sum(total_bayar)
     tax = round(raw_total * 0.1)
     total = raw_total + tax
-    print(f"\tSUBTOTAL\t| {rupiah_format(raw_total, with_prefix=True, desimal=0)}")
-    print(f"\tPPN 10%\t\t| {rupiah_format(tax, with_prefix=True, desimal=0)}")
-    print(f"\tTOTAL\t\t| {rupiah_format(total, with_prefix=True, desimal=0)}")
+    print(f"\tSUBTOTAL\t| {rupiah_format(raw_total)}")
+    print(f"\tPPN 10%\t\t| {rupiah_format(tax)}")
+    print(f"\tTOTAL\t\t| {rupiah_format(total)}")
     uang_bayar = int(input("\tUANG\t\t| Rp. "))
     # Loop jika uang bayar kurang dari total bayar
     while uang_bayar < total:
@@ -137,7 +137,7 @@ if __name__ == "__main__":
             # Bersihkan stdout jika user input kurang dari total bayar
             sys.stdout.write("\033[1A\033[2K")
         uang_bayar = int(input("\tUANG\t\t| Rp. "))
-    kembali = rupiah_format(uang_bayar - total, with_prefix=True, desimal=0)
+    kembali = rupiah_format(uang_bayar - total)
     sys.stdout.write("\033[1A\033[2K")
-    print(f"\tUANG\t\t| {rupiah_format(uang_bayar, with_prefix=True, desimal=0)}")
+    print(f"\tUANG\t\t| {rupiah_format(uang_bayar)}")
     print(f"\tCHANGE\t\t| {kembali}")
