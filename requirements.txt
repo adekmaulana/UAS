@@ -1,6 +1,5 @@
 sqlalchemy
 psycopg2
 psycopg2-binary
-shutil
 python-docx
 cloudconvert
