@@ -161,4 +161,4 @@ def parse_order(list_belanja: list, total_bayar: list, data: list) -> None:
                     run.text = rupiah_format(data[i - 4])
         i += 1
 
-    document.save('temp.docx')
+    return document.save('temp.docx')
