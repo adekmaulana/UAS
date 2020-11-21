@@ -100,6 +100,7 @@ if __name__ == "__main__":
             break
         else:
             print('Jawaban anda diluar pertanyaan')
+            break
     clear()
     d = datetime.datetime.now()
     no = sample(range(1, 100), 3)
