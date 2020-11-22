@@ -142,7 +142,7 @@ def parse_order(list_belanja: list, total_bayar: list, data: list) -> None:
                     run.text = rupiah_format(total_bayar[index])
 
     # Tulis SUBTOTAL, PPN, TOTAL, UANG, CHANGE/KEMBALIAN
-    i = 4
+    i = len(list_belanja) + 1
     while i <= total:
         for index, cell in enumerate(rows[i].cells):
             paragraphs = cell.paragraphs
