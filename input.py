@@ -25,8 +25,7 @@ def get_harga(ukuran: str) -> str:
 
 def cetak_katalog():
     print("-------------------------------------------------------")
-    print("|                    Boxer Olahraga                   |")
-    print("|                        Avalon                       |")
+    print("|                    Avalon Sports                    |")
     print("|-----------------------------------------------------|")
     print("|  Kode Item  |   Warna Item   |        Ukuran        |")
     print("|     PTH     |      PUTIH     |   XXL, XL, L, M, S   |")
