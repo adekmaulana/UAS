@@ -24,24 +24,57 @@ def get_harga(ukuran: str) -> str:
 
 
 def cetak_katalog():
-    print("-------------------------------------------------------")
-    print("|                    Boxer Olahraga                   |")
-    print("|                        Avalon                       |")
-    print("|-----------------------------------------------------|")
-    print("|  Kode Item  |   Warna Item   |        Ukuran        |")
-    print("|     PTH     |      PUTIH     |   XXL, XL, L, M, S   |")
-    print("|     HTM     |      HITAM     |   XXL, XL, L, M, S   |")
-    print("|     AB2     |     ABU-ABU    |   XXL, XL, L, M, S   |")
-    print("|     NVY     |      NAVY      |   XXL, XL, L, M, S   |")
-    print("|-----------------------------------------------------|")
+    putih = (
+        get_item('PTH').ukuran.get('XXL')['quantity'],
+        get_item('PTH').ukuran.get('XL')['quantity'],
+        get_item('PTH').ukuran.get('L')['quantity'],
+        get_item('PTH').ukuran.get('M')['quantity'],
+        get_item('PTH').ukuran.get('S')['quantity']
+    )
+    hitam = (
+        get_item('HTM').ukuran.get('XXL')['quantity'],
+        get_item('HTM').ukuran.get('XL')['quantity'],
+        get_item('HTM').ukuran.get('L')['quantity'],
+        get_item('HTM').ukuran.get('M')['quantity'],
+        get_item('HTM').ukuran.get('S')['quantity']
+    )
+    abu_abu = (
+        get_item('AB2').ukuran.get('XXL')['quantity'],
+        get_item('AB2').ukuran.get('XL')['quantity'],
+        get_item('AB2').ukuran.get('L')['quantity'],
+        get_item('AB2').ukuran.get('M')['quantity'],
+        get_item('AB2').ukuran.get('S')['quantity']
+    )
+    navy = (
+        get_item('NVY').ukuran.get('XXL')['quantity'],
+        get_item('NVY').ukuran.get('XL')['quantity'],
+        get_item('NVY').ukuran.get('L')['quantity'],
+        get_item('NVY').ukuran.get('M')['quantity'],
+        get_item('NVY').ukuran.get('S')['quantity']
+    )
+    print("_______________________________________________________")
+    print("|                                                     |")
+    print("|                    Avalon Sports                    |")
+    print("|_____________________________________________________|")
+    print("|             |                |        Ukuran        |")
+    print("|  Kode Item  |   Warna Item   |   XXL, XL, L, M, S   |")
+    print("|_____________|________________|______________________|")
+    print("|             |                |                      |")
+    print(f"|     PTH     |      PUTIH     |  {putih[0]}, {putih[1]}, {putih[2]}, {putih[3]}, {putih[4]}  |")
+    print(f"|     HTM     |      HITAM     |  {hitam[0]}, {hitam[1]}, {hitam[2]}, {hitam[3]}, {hitam[4]}  |")
+    print(f"|     AB2     |     ABU-ABU    |  {abu_abu[0]}, {abu_abu[1]}, {abu_abu[2]}, {abu_abu[3]}, {abu_abu[4]}  |")
+    print(f"|     NVY     |      NAVY      |  {navy[0]}, {navy[1]}, {navy[2]}, {navy[3]}, {navy[4]}  |")
+    print("|_____________|________________|______________________|")
+    print("|                                                     |")
     print("|                        Harga                        |")
-    print("|-----------------------------------------------------|")
+    print("|_____________________________________________________|")
+    print("|                                                     |")
     print("|   • XXL ->  Rp. 160.000                             |")
     print("|   • XL  ->  Rp. 157.500                             |")
     print("|   •  L  ->  Rp. 155.000                             |")
     print("|   •  M  ->  Rp. 152.500                             |")
     print("|   •  S  ->  Rp. 150.000                             |")
-    print("-------------------------------------------------------")
+    print("|_____________________________________________________|")
 
 
 if __name__ == "__main__":
