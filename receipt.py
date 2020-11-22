@@ -93,7 +93,7 @@ def convert() -> None:
 def parse_data(d: datetime.datetime, no: list) -> None:
     order = f"#AV{no[0]}{no[1]}{no[2]}"
     cells_text = [
-        f"{d:%d}/{d:%m}/{d:%y} {d:%-I}:{d:%M}:{d:%S} {d:%p}",
+        f"{d:%d}/{d:%m}/{d:%y} {d:%I}:{d:%M}:{d:%S} {d:%p}",
         f"{order}"
     ]
     document = Document('receipt.docx')

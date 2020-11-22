@@ -107,7 +107,7 @@ if __name__ == "__main__":
     order = f"#AV{no[0]}{no[1]}{no[2]}"
     print("\t*===AVALON SPORTS===*\t")
     print()
-    print(f"{d:%d}/{d:%m}/{d:%y} {d:%-I}:{d:%M}:{d:%S} {d:%p}\t  ORDER: {order}")
+    print(f"{d:%d}/{d:%m}/{d:%y} {d:%I}:{d:%M}:{d:%S} {d:%p}\t  ORDER: {order}")
     print()
 
     total_bayar = []
