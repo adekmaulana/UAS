@@ -35,9 +35,7 @@ def convert() -> None:
     tasks = {
         "tasks": {
             "upload-file": {
-                "operation": "import/upload",
-                "input_format": "docx",
-                "output_format": "pdf"
+                "operation": "import/upload"
             },
             "convert-file-pdf": {
                 "operation": "convert",
