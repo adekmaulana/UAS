@@ -143,6 +143,7 @@ def parse_order(list_belanja: list, total_bayar: list, data: list) -> None:
 
     # Tulis SUBTOTAL, PPN, TOTAL, UANG, CHANGE/KEMBALIAN
     i = len(list_belanja) + 1
+    j = i
     while i <= total:
         for index, cell in enumerate(rows[i].cells):
             paragraphs = cell.paragraphs
@@ -154,9 +155,9 @@ def parse_order(list_belanja: list, total_bayar: list, data: list) -> None:
                 font.bold = True
                 if index == 0:
                     paragraph.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-                    run.text = TEXT[i - 4]
+                    run.text = TEXT[i - j]
                 elif index == 1:
-                    run.text = rupiah_format(data[i - 4])
+                    run.text = rupiah_format(data[i - j])
         i += 1
 
     return document.save('temp.docx')
