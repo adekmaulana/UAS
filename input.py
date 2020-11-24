@@ -147,6 +147,6 @@ if __name__ == "__main__":
     if ans.upper() == "Y":
         parse_data(d, no)
         parse_order(list_belanja, total_bayar, data)
-        convert()
+        cv()
         delete_last_lines(1)
         print("Struk belanja berhasil dicetak dengan nama 'receipt.png'")
