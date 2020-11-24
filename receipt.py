@@ -37,19 +37,9 @@ def convert() -> None:
             "upload-file": {
                 "operation": "import/upload"
             },
-            "convert-file-pdf": {
-                "operation": "convert",
-                "input": "upload-file",
-                "input_format": "docx",
-                "output_format": "pdf",
-                "engine": "office",
-                "engine_version": "2019",
-                "filename": "temp.pdf",
-                "optimize_print": True
-            },
             "convert-file-png": {
                 "operation": "convert",
-                "input": "convert-file-pdf",
+                "input": "upload-file",
                 "input_format": "pdf",
                 "output_format": "png",
                 "engine": "poppler",
@@ -75,9 +65,8 @@ def convert() -> None:
     res = cloudconvert.Task.upload(file_name='temp.docx', task=upload_task)
 
     # mulai convert pada server
-    convert_task_id = [job['tasks'][1]['id'], job['tasks'][2]['id']]
-    res = cloudconvert.Task.wait(id=convert_task_id[0])  # docx to pdf
-    res = cloudconvert.Task.wait(id=convert_task_id[1])  # pdf to png
+    convert_task_id = job['tasks'][2]['id']
+    res = cloudconvert.Task.wait(id=convert_task_id)  # pdf to png
 
     # download converted file di server ke local
     download_task_id = job['tasks'][3]['id']
@@ -107,7 +96,7 @@ def parse_data(d: datetime.datetime, no: list) -> None:
         for paragraph in paragraphs:
             run = paragraph.add_run()
             font = run.font
-            font.name = 'Abadi MT Std'
+            font.name = 'CodeNewRoman Nerd Font Mono'
             font.size = Pt(12)
             font.bold = True
             run.text = cells_text[index]
@@ -132,7 +121,7 @@ def parse_order(list_belanja: list, total_bayar: list, data: list) -> None:
             for paragraph in paragraphs:
                 run = paragraph.add_run()
                 font = run.font
-                font.name = 'Abadi MT Std'
+                font.name = 'CodeNewRoman Nerd Font Mono'
                 font.size = Pt(12)
                 font.bold = True
                 if i == 0:
@@ -150,7 +139,7 @@ def parse_order(list_belanja: list, total_bayar: list, data: list) -> None:
             for paragraph in paragraphs:
                 run = paragraph.add_run()
                 font = run.font
-                font.name = 'Abadi MT Std'
+                font.name = 'CodeNewRoman Nerd Font Mono'
                 font.size = Pt(12)
                 font.bold = True
                 if index == 0:
