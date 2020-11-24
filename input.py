@@ -2,7 +2,7 @@ import sys
 import datetime
 
 from random import sample
-from receipt import parse_data, parse_order, convert, rupiah_format
+from receipt import parse_data, parse_order, cv, rupiah_format, delete_last_lines
 from time import sleep
 from shutil import get_terminal_size
 from sql_helper.manager import get_item, update_item
@@ -133,10 +133,10 @@ if __name__ == "__main__":
     while uang_bayar < total:
         if uang_bayar < total:
             # Bersihkan stdout jika user input kurang dari total bayar
-            sys.stdout.write("\033[1A\033[2K")
+            delete_last_lines(1)
         uang_bayar = int(input("\tUANG\t\t| Rp. "))
     kembali = rupiah_format(uang_bayar - total)
-    sys.stdout.write("\033[1A\033[2K")
+    delete_last_lines(1)
     print(f"\tUANG\t\t| {rupiah_format(uang_bayar)}")
     print(f"\tCHANGE\t\t| {kembali}")
     print()
@@ -148,4 +148,5 @@ if __name__ == "__main__":
         parse_data(d, no)
         parse_order(list_belanja, total_bayar, data)
         convert()
+        delete_last_lines(1)
         print("Struk belanja berhasil dicetak dengan nama 'receipt.png'")

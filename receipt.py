@@ -9,6 +9,16 @@ from docx import Document
 from docx.shared import Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.style import WD_STYLE_TYPE
+from docx2pdf import convert
+
+
+def delete_last_lines(n=1):
+    CURSOR_UP_ONE = '\x1b[1A'
+    ERASE_LINE = '\x1b[2K'
+    for _ in range(n):
+        sys.stdout.write(CURSOR_UP_ONE)
+        sys.stdout.write(ERASE_LINE)
+        sys.stdout.flush()
 
 
 def rupiah_format(angka, with_prefix=True, desimal=0):
@@ -31,7 +41,7 @@ def suppress_stdout():
             sys.stdout = old_stdout
 
 
-def convert() -> None:
+def cv() -> None:
     tasks = {
         "tasks": {
             "upload-file": {
@@ -53,6 +63,10 @@ def convert() -> None:
         }
     }
 
+    # convert ke PDF
+    convert('temp.docx')
+    delete_last_lines(1)
+
     # Initialized API_KEY
     cloudconvert.configure(api_key=API_KEY)
 
@@ -62,14 +76,14 @@ def convert() -> None:
     # Upload file ke server
     upload_task_id = job['tasks'][0]['id']
     upload_task = cloudconvert.Task.find(id=upload_task_id)
-    res = cloudconvert.Task.upload(file_name='temp.docx', task=upload_task)
+    res = cloudconvert.Task.upload(file_name='temp.pdf', task=upload_task)
 
     # mulai convert pada server
-    convert_task_id = job['tasks'][2]['id']
+    convert_task_id = job['tasks'][1]['id']
     res = cloudconvert.Task.wait(id=convert_task_id)  # pdf to png
 
     # download converted file di server ke local
-    download_task_id = job['tasks'][3]['id']
+    download_task_id = job['tasks'][2]['id']
     res = cloudconvert.Task.wait(id=download_task_id)
     files = res.get("result").get("files")[0]
     with suppress_stdout():
@@ -77,6 +91,7 @@ def convert() -> None:
             filename=files['filename'], url=files['url'])
 
     os.remove('temp.docx')
+    os.remove('temp.pdf')
 
 
 def parse_data(d: datetime.datetime, no: list) -> None:
@@ -96,8 +111,8 @@ def parse_data(d: datetime.datetime, no: list) -> None:
         for paragraph in paragraphs:
             run = paragraph.add_run()
             font = run.font
-            font.name = 'CodeNewRoman Nerd Font Mono'
-            font.size = Pt(12)
+            font.name = 'CodeNewRoman NF'
+            font.size = Pt(11)
             font.bold = True
             run.text = cells_text[index]
     return document.save('temp.docx')
@@ -121,8 +136,8 @@ def parse_order(list_belanja: list, total_bayar: list, data: list) -> None:
             for paragraph in paragraphs:
                 run = paragraph.add_run()
                 font = run.font
-                font.name = 'CodeNewRoman Nerd Font Mono'
-                font.size = Pt(12)
+                font.name = 'CodeNewRoman NF'
+                font.size = Pt(11)
                 font.bold = True
                 if i == 0:
                     paragraph.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.RIGHT
@@ -139,8 +154,8 @@ def parse_order(list_belanja: list, total_bayar: list, data: list) -> None:
             for paragraph in paragraphs:
                 run = paragraph.add_run()
                 font = run.font
-                font.name = 'CodeNewRoman Nerd Font Mono'
-                font.size = Pt(12)
+                font.name = 'CodeNewRoman NF'
+                font.size = Pt(11)
                 font.bold = True
                 if index == 0:
                     paragraph.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.RIGHT
