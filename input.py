@@ -2,10 +2,19 @@ import sys
 import datetime
 
 from random import sample
-from receipt import parse_data, parse_order, cv, rupiah_format, delete_last_lines
+from receipt import parse_data, parse_order, cv, rupiah_format, windows
 from time import sleep
 from shutil import get_terminal_size
 from sql_helper.manager import get_item, update_item
+
+
+def delete_last_lines(n=1):
+    CURSOR_UP_ONE = '\x1b[1A'
+    ERASE_LINE = '\x1b[2K'
+    for _ in range(n):
+        sys.stdout.write(CURSOR_UP_ONE)
+        sys.stdout.write(ERASE_LINE)
+        sys.stdout.flush()
 
 
 def clear():
@@ -114,8 +123,6 @@ if __name__ == "__main__":
     for i in range(jumlah_beli):
         list_belanja.append(
             f"{list_banyak[i]} {list_boxer[i].upper()} ({list_ukuran[i]})")
-
-    for i in range(jumlah_beli):
         jumlah = list_harga[i] * list_banyak[i]
         total_bayar.append(jumlah)
         print(f"\t{list_belanja[i]}\t| {rupiah_format(jumlah)}")
@@ -132,11 +139,35 @@ if __name__ == "__main__":
     # Loop jika uang bayar kurang dari total bayar
     while uang_bayar < total:
         if uang_bayar < total:
-            # Bersihkan stdout jika user input kurang dari total bayar
-            delete_last_lines(1)
+            if windows is False:
+                # Bersihkan stdout jika user input kurang dari total bayar
+                delete_last_lines(1)
+            else:
+                clear()
+                print("\t*===AVALON SPORTS===*\t")
+                print()
+                print(f"{d:%d}/{d:%m}/{d:%y} {d:%I}:{d:%M}:{d:%S} {d:%p}\t  ORDER: {order}")
+                print()
+                for i in range(len(list_belanja)):
+                    print(f"\t{list_belanja[i]}\t| {rupiah_format(total_bayar[i])}")
+                print(f"\tSUBTOTAL\t| {rupiah_format(raw_total)}")
+                print(f"\tPPN 10%\t\t| {rupiah_format(tax)}")
+                print(f"\tTOTAL\t\t| {rupiah_format(total)}")
         uang_bayar = int(input("\tUANG\t\t| Rp. "))
     kembali = rupiah_format(uang_bayar - total)
-    delete_last_lines(1)
+    if windows is False:
+        delete_last_lines(1)
+    else:
+        clear()
+        print("\t*===AVALON SPORTS===*\t")
+        print()
+        print(f"{d:%d}/{d:%m}/{d:%y} {d:%I}:{d:%M}:{d:%S} {d:%p}\t  ORDER: {order}")
+        print()
+        for i in range(len(list_belanja)):
+            print(f"\t{list_belanja[i]}\t| {rupiah_format(total_bayar[i])}")
+        print(f"\tSUBTOTAL\t| {rupiah_format(raw_total)}")
+        print(f"\tPPN 10%\t\t| {rupiah_format(tax)}")
+        print(f"\tTOTAL\t\t| {rupiah_format(total)}")
     print(f"\tUANG\t\t| {rupiah_format(uang_bayar)}")
     print(f"\tCHANGE\t\t| {kembali}")
     print()
@@ -148,5 +179,4 @@ if __name__ == "__main__":
         parse_data(d, no)
         parse_order(list_belanja, total_bayar, data)
         cv()
-        delete_last_lines(1)
         print("Struk belanja berhasil dicetak dengan nama 'receipt.png'")

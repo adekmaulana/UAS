@@ -8,8 +8,27 @@ from contextlib import contextmanager
 from docx import Document
 from docx.shared import Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.enum.style import WD_STYLE_TYPE
 from docx2pdf import convert
+
+from subprocess import PIPE, Popen, CalledProcessError
+
+
+WINDOWS = ['CodeNewRoman NF', 11]
+LINUX = ['CodeNewRoman Nerd Font Mono', 12]
+
+windows = False
+if os.name == 'nt':
+    windows = True
+
+
+def subprocess_run(cmd):
+    subproc = Popen(cmd, stdout=PIPE, stderr=PIPE,
+                    shell=True, universal_newlines=True)
+    talk = subproc.communicate()
+    exitCode = subproc.returncode
+    if exitCode != 0:
+        raise CalledProcessError(exitCode, cmd)
+    return talk
 
 
 def delete_last_lines(n=1):
@@ -64,8 +83,11 @@ def cv() -> None:
     }
 
     # convert ke PDF
-    convert('temp.docx')
-    delete_last_lines(1)
+    if windows is True:
+        convert('temp.docx')
+    else:
+        cmd = 'unoconv -f pdf temp.docx'
+        talk = subprocess_run(cmd)
 
     # Initialized API_KEY
     cloudconvert.configure(api_key=API_KEY)
@@ -103,16 +125,17 @@ def parse_data(d: datetime.datetime, no: list) -> None:
     document = Document('receipt.docx')
     table = document.tables[1].rows[0]
 
-    # styles = document.styles
-    # style = styles.add_style('Abadi MT Std', WD_STYLE_TYPE.PARAGRAPH)
-    # style.font.name = 'Abadi MT Std'
     for index, cell in enumerate(table.cells):
         paragraphs = cell.paragraphs
         for paragraph in paragraphs:
             run = paragraph.add_run()
             font = run.font
-            font.name = 'CodeNewRoman NF'
-            font.size = Pt(11)
+            if windows is True:
+                font.name = WINDOWS[0]
+                font.size = Pt(WINDOWS[1])
+            else:
+                font.name = LINUX[0]
+                font.size = Pt(LINUX[1])
             font.bold = True
             run.text = cells_text[index]
     return document.save('temp.docx')
@@ -136,8 +159,12 @@ def parse_order(list_belanja: list, total_bayar: list, data: list) -> None:
             for paragraph in paragraphs:
                 run = paragraph.add_run()
                 font = run.font
-                font.name = 'CodeNewRoman NF'
-                font.size = Pt(11)
+                if windows is True:
+                    font.name = WINDOWS[0]
+                    font.size = Pt(WINDOWS[1])
+                else:
+                    font.name = LINUX[0]
+                    font.size = Pt(LINUX[1])
                 font.bold = True
                 if i == 0:
                     paragraph.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.RIGHT
@@ -154,8 +181,12 @@ def parse_order(list_belanja: list, total_bayar: list, data: list) -> None:
             for paragraph in paragraphs:
                 run = paragraph.add_run()
                 font = run.font
-                font.name = 'CodeNewRoman NF'
-                font.size = Pt(11)
+                if windows is True:
+                    font.name = WINDOWS[0]
+                    font.size = Pt(WINDOWS[1])
+                else:
+                    font.name = LINUX[0]
+                    font.size = Pt(LINUX[1])
                 font.bold = True
                 if index == 0:
                     paragraph.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.RIGHT
