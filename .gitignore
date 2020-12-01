@@ -1,2 +1,4 @@
 sql_helper/__pycache__/*
 __pycache__/*
+*.py~
+.gitignore~
