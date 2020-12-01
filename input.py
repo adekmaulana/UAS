@@ -2,7 +2,7 @@ import sys
 import datetime
 
 from random import sample
-from receipt import parse_data, parse_order, cv, rupiah_format, windows
+from receipt import parse_data, parse_order, cv, rupiah_format, windows, subprocess_run
 from time import sleep
 from shutil import get_terminal_size
 from sql_helper.manager import get_item, update_item
@@ -181,5 +181,10 @@ if __name__ == "__main__":
     if ans.upper() == "Y":
         parse_data(d, no)
         parse_order(list_belanja, total_bayar, data)
-        cv()
-        print("Struk belanja berhasil dicetak dengan nama 'receipt.png'")
+        filename = cv()
+        print("Struk belanja berhasil dicetak")
+        if windows is False:
+            cmd = f'xdg-open {filename}'
+        else:
+            cmd = f'start "Struk Belanja" {filename}'
+        subprocess_run(cmd)
