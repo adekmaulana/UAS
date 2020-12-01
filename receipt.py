@@ -128,7 +128,10 @@ def parse_data(d: datetime.datetime, no: list) -> None:
         f"{d:%d}/{d:%m}/{d:%y} {d:%I}:{d:%M}:{d:%S} {d:%p}",
         f"{order}"
     ]
-    document = Document('receipt.docx')
+    if windows is True:
+        document = Document('receipt_windows.docx')
+    else:
+        document = Document('receipt_linux.docx')
     table = document.tables[1].rows[0]
 
     for index, cell in enumerate(table.cells):
