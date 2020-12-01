@@ -131,6 +131,7 @@ if __name__ == "__main__":
     tax = round(raw_total * 0.1)
     total = raw_total + tax
 
+    print()
     print(f"\tSUBTOTAL\t| {rupiah_format(raw_total)}")
     print(f"\tPPN 10%\t\t| {rupiah_format(tax)}")
     print(f"\tTOTAL\t\t| {rupiah_format(total)}")
@@ -150,6 +151,7 @@ if __name__ == "__main__":
                 print()
                 for i in range(len(list_belanja)):
                     print(f"\t{list_belanja[i]}\t| {rupiah_format(total_bayar[i])}")
+                print()
                 print(f"\tSUBTOTAL\t| {rupiah_format(raw_total)}")
                 print(f"\tPPN 10%\t\t| {rupiah_format(tax)}")
                 print(f"\tTOTAL\t\t| {rupiah_format(total)}")
@@ -165,6 +167,7 @@ if __name__ == "__main__":
         print()
         for i in range(len(list_belanja)):
             print(f"\t{list_belanja[i]}\t| {rupiah_format(total_bayar[i])}")
+        print()
         print(f"\tSUBTOTAL\t| {rupiah_format(raw_total)}")
         print(f"\tPPN 10%\t\t| {rupiah_format(tax)}")
         print(f"\tTOTAL\t\t| {rupiah_format(total)}")

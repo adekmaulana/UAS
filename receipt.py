@@ -13,8 +13,8 @@ from docx2pdf import convert
 from subprocess import PIPE, Popen, CalledProcessError
 
 
-WINDOWS = ['CodeNewRoman NF', 11]
-LINUX = ['CodeNewRoman Nerd Font Mono', 12]
+WINDOWS = ['CodeNewRoman NF', 10]
+LINUX = ['CodeNewRoman Nerd Font Mono', 11]
 
 windows = False
 if os.name == 'nt':
@@ -108,12 +108,18 @@ def cv() -> None:
     download_task_id = job['tasks'][2]['id']
     res = cloudconvert.Task.wait(id=download_task_id)
     files = res.get("result").get("files")[0]
+
+    if os.path.exists(files['filename']):
+        os.remove(files['filename'])
+
     with suppress_stdout():
         res = cloudconvert.download(
             filename=files['filename'], url=files['url'])
 
     os.remove('temp.docx')
     os.remove('temp.pdf')
+
+    return files['filename']
 
 
 def parse_data(d: datetime.datetime, no: list) -> None:
@@ -132,10 +138,10 @@ def parse_data(d: datetime.datetime, no: list) -> None:
             font = run.font
             if windows is True:
                 font.name = WINDOWS[0]
-                font.size = Pt(WINDOWS[1])
+                font.size = Pt(WINDOWS[1] + 1)
             else:
                 font.name = LINUX[0]
-                font.size = Pt(LINUX[1])
+                font.size = Pt(LINUX[1] + 1)
             font.bold = True
             run.text = cells_text[index]
     return document.save('temp.docx')
