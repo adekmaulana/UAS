@@ -1,4 +1,4 @@
-from sql_helper import SESSION, BASE
+from avalon.helper import SESSION, BASE
 from sqlalchemy import Column, String, JSON
 from sqlalchemy.orm.attributes import flag_modified
 

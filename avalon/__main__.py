@@ -1,24 +1,12 @@
-import sys
 import datetime
 
 from random import sample
-from receipt import parse_data, parse_order, cv, rupiah_format, windows, subprocess_run
 from time import sleep
-from shutil import get_terminal_size
-from sql_helper.manager import get_item, update_item
-
-
-def delete_last_lines(n=1):
-    CURSOR_UP_ONE = '\x1b[1A'
-    ERASE_LINE = '\x1b[2K'
-    for _ in range(n):
-        sys.stdout.write(CURSOR_UP_ONE)
-        sys.stdout.write(ERASE_LINE)
-        sys.stdout.flush()
-
-
-def clear():
-    print("\n" * get_terminal_size().lines, end='')
+from avalon.helper.manager import get_item, update_item
+from avalon.tools import rupiah_format, windows, delete_last_lines, clear
+from avalon.tools.subprocess import Command
+from avalon.tools.data2docx import merge
+from avalon.tools.pdf2png import run
 
 
 def get_harga(ukuran: str) -> str:
@@ -44,15 +32,15 @@ def cetak_katalog():
     print("|-----------------------------------------------------|")
     print("|                        Harga                        |")
     print("|-----------------------------------------------------|")
-    print("|   • XXL ->  Rp. 160.000                             |")
-    print("|   • XL  ->  Rp. 157.500                             |")
-    print("|   •  L  ->  Rp. 155.000                             |")
-    print("|   •  M  ->  Rp. 152.500                             |")
-    print("|   •  S  ->  Rp. 150.000                             |")
+    print(f"|   • XXL ->  {rupiah_format(get_harga('XXL'))}                             |")
+    print(f"|   • XL  ->  {rupiah_format(get_harga('XL'))}                             |")
+    print(f"|   •  L  ->  {rupiah_format(get_harga('L'))}                             |")
+    print(f"|   •  M  ->  {rupiah_format(get_harga('M'))}                             |")
+    print(f"|   •  S  ->  {rupiah_format(get_harga('S'))}                             |")
     print("-------------------------------------------------------")
 
 
-if __name__ == "__main__":
+def main():
     jumlah_beli = 0
     list_boxer = []
     list_harga = []
@@ -62,12 +50,12 @@ if __name__ == "__main__":
     while True:
         cetak_katalog()
         kode = input("Masukkan kode item '[PTH/HTM/AB2/NVY]': ")
-        ukuran = input("Pilih ukuran boxer '[XXL/XL/L/M/S]': ")
+        ukuran = input("Pilih ukuran '[XXL/XL/L/M/S]': ")
         boxer = get_item(kode.upper())
         harga = get_harga(ukuran.upper())
         # Jika kode tidak terdaftar, ulang looping
         if boxer is None:
-            print("Kode boxer tidak terdaftar!")
+            print("Kode tidak terdaftar!")
             sleep(2.5)
             clear()
             continue
@@ -179,12 +167,16 @@ if __name__ == "__main__":
 
     ans = input("Cetak struk belanja? '[Y/N]': ")
     if ans.upper() == "Y":
-        parse_data(d, no)
-        parse_order(list_belanja, total_bayar, data)
-        filename = cv()
+        merge(d, no, list_belanja, total_bayar, data)
+        filename = run()
         print("Struk belanja berhasil dicetak")
         if windows is False:
             cmd = f'xdg-open {filename}'
         else:
             cmd = f'start "Struk Belanja" {filename}'
-        subprocess_run(cmd)
+        command = Command(cmd)
+        command.run()
+
+
+if __name__ == '__main__':
+    main()

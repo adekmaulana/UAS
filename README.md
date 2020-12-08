@@ -17,6 +17,11 @@ Sebelum running program ini anda diharuskan menginstall beberapa library modules
 
 Langkah di atas sangat dibutuhkan untuk kelancaran dan kesempurnaan program.
 
+### Running
+```sh
+python -m avalon
+```
+
 ### Output
 
 <img src="https://raw.githubusercontent.com/adekmaulana/UAS/main/receipt.png" width="400px">
