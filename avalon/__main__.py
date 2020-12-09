@@ -21,6 +21,11 @@ def get_harga(ukuran: str) -> str:
 
 
 def cetak_katalog():
+    XXL = rupiah_format(get_harga('XXL'))
+    XL = rupiah_format(get_harga('XL'))
+    L = rupiah_format(get_harga('L'))
+    M = rupiah_format(get_harga('M'))
+    S = rupiah_format(get_harga('S'))
     print("-------------------------------------------------------")
     print("|                    Avalon Sports                    |")
     print("|-----------------------------------------------------|")
@@ -32,11 +37,11 @@ def cetak_katalog():
     print("|-----------------------------------------------------|")
     print("|                        Harga                        |")
     print("|-----------------------------------------------------|")
-    print(f"|   • XXL ->  {rupiah_format(get_harga('XXL'))}                             |")
-    print(f"|   • XL  ->  {rupiah_format(get_harga('XL'))}                             |")
-    print(f"|   •  L  ->  {rupiah_format(get_harga('L'))}                             |")
-    print(f"|   •  M  ->  {rupiah_format(get_harga('M'))}                             |")
-    print(f"|   •  S  ->  {rupiah_format(get_harga('S'))}                             |")
+    print(f"|   • XXL ->  {XXL}                             |")
+    print(f"|   • XL  ->  {XL}                             |")
+    print(f"|   •  L  ->  {L}                             |")
+    print(f"|   •  M  ->  {M}                             |")
+    print(f"|   •  S  ->  {S}                             |")
     print("-------------------------------------------------------")
 
 
@@ -50,15 +55,14 @@ def main():
     while True:
         cetak_katalog()
         kode = input("Masukkan kode item '[PTH/HTM/AB2/NVY]': ")
-        ukuran = input("Pilih ukuran '[XXL/XL/L/M/S]': ")
-        boxer = get_item(kode.upper())
-        harga = get_harga(ukuran.upper())
         # Jika kode tidak terdaftar, ulang looping
-        if boxer is None:
+        if kode.upper() not in ['PTH', 'HTM', 'AB2', 'NVY']:
             print("Kode tidak terdaftar!")
             sleep(2.5)
             clear()
             continue
+        ukuran = input("Pilih ukuran '[XXL/XL/L/M/S]': ")
+        harga = get_harga(ukuran.upper())
         # Jika ukuran tidak terdaftar, ulang looping
         if harga is None:
             print("Maaf ukuran belum ada...")
@@ -66,7 +70,8 @@ def main():
             clear()
             continue
         banyak_beli = int(input("Masukkan banyak beli: "))
-        # Check stock boxer pada database
+        # Initialized item dan check stock boxer pada database
+        boxer = get_item(kode.upper())
         quantity = boxer.ukuran.get(ukuran).get('quantity')
         # Beritahu jika stock tidak ada
         if quantity == 0:
