@@ -2,7 +2,6 @@ import datetime
 
 from random import sample
 from time import sleep
-from alive_progress import alive_bar
 from avalon.helper.manager import get_item, update_item
 from avalon.tools import rupiah_format, windows, delete_last_lines, clear
 from avalon.tools.subprocess import Command
@@ -181,9 +180,7 @@ def main():
     if ans.upper() == "Y":
         print()
         merge(d, no, list_belanja, total_bayar, data)
-        with alive_bar(1, title='Mencetak', spinner='classic') as bar:
-            filename = run()
-            bar()
+        filename = run()
         if windows is False:
             cmd = f'xdg-open {filename}'
         else:
