@@ -2,6 +2,7 @@ import datetime
 
 from random import sample
 from time import sleep
+from alive_progress import alive_bar
 from avalon.helper.manager import get_item, update_item
 from avalon.tools import rupiah_format, windows, delete_last_lines, clear
 from avalon.tools.subprocess import Command
@@ -69,10 +70,16 @@ def main():
             sleep(2.5)
             clear()
             continue
-        banyak_beli = int(input("Masukkan banyak beli: "))
+        try:
+            banyak_beli = int(input("Masukkan banyak beli: "))
+        except ValueError:
+            print("Maaf yang anda masukkan bukan angka")
+            sleep(2.5)
+            clear()
+            continue
         # Initialized item dan check stock boxer pada database
         boxer = get_item(kode.upper())
-        quantity = boxer.ukuran.get(ukuran).get('quantity')
+        quantity = boxer.ukuran.get(ukuran.upper()).get('quantity')
         # Beritahu jika stock tidak ada
         if quantity == 0:
             print(f"Maaf, {boxer.warna.upper()} ({ukuran.upper()}) belum tersedia")
@@ -87,10 +94,10 @@ def main():
         list_boxer.append(boxer.warna)
         list_harga.append(harga)
         list_banyak.append(banyak_beli)
-        list_ukuran.append(ukuran)
+        list_ukuran.append(ukuran.upper())
         jumlah_beli += 1
         # Kurangi stock pada database ketika logika di atas sudah terpenuhi
-        update_item(boxer, ukuran, banyak_beli)
+        update_item(boxer, ukuran.upper(), banyak_beli)
         print()
         lagi = input("Tambah barang lagi? '[Y/N]': ")
         if lagi.upper() == "Y":
@@ -172,9 +179,11 @@ def main():
 
     ans = input("Cetak struk belanja? '[Y/N]': ")
     if ans.upper() == "Y":
+        print()
         merge(d, no, list_belanja, total_bayar, data)
-        filename = run()
-        print("Struk belanja berhasil dicetak")
+        with alive_bar(1, title='Mencetak', spinner='classic') as bar:
+            filename = run()
+            bar()
         if windows is False:
             cmd = f'xdg-open {filename}'
         else:

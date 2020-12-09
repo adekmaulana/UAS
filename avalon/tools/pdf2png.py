@@ -1,12 +1,14 @@
 import os
 import cloudconvert
+import typing
+import pathlib
 
 from avalon.tools import windows, suppress_stdout
 from avalon.tools.docx2pdf import convert
 from avalon.tools.subprocess import Command
 
 
-def run() -> None:
+def run() -> typing.Union[str, pathlib.Path]:
     tasks = {
         "tasks": {
             "upload-file": {
@@ -28,11 +30,13 @@ def run() -> None:
         }
     }
 
+    tools = 'avalon/tools'
+
     # convert ke PDF
     if windows is True:
-        convert('avalon/tools/temp.docx')
+        convert(f'{tools}/temp.docx')
     else:
-        command = Command('unoconv -f pdf avalon/tools/temp.docx')
+        command = Command(f'unoconv -f pdf {tools}/temp.docx')
         command.run()
 
     # Initialized API_KEY
@@ -44,7 +48,7 @@ def run() -> None:
     # Upload file ke server
     upload_task_id = job['tasks'][0]['id']
     upload_task = cloudconvert.Task.find(id=upload_task_id)
-    res = cloudconvert.Task.upload(file_name='avalon/tools/temp.pdf', task=upload_task)
+    res = cloudconvert.Task.upload(file_name=f'{tools}/temp.pdf', task=upload_task)
 
     # mulai convert pada server
     convert_task_id = job['tasks'][1]['id']
@@ -55,14 +59,14 @@ def run() -> None:
     res = cloudconvert.Task.wait(id=download_task_id)
     files = res.get("result").get("files")[0]
 
-    if os.path.exists(files['filename']):
-        os.remove(files['filename'])
+    if os.path.exists(f"{tools}/{files['filename']}"):
+        os.remove(f"{tools}/{files['filename']}")
 
     with suppress_stdout():
         res = cloudconvert.download(
-            filename=files['filename'], url=files['url'])
+            filename=f"{tools}/{files['filename']}", url=files['url'])
 
-    os.remove('avalon/tools/temp.docx')
-    os.remove('avalon/tools/temp.pdf')
+    os.remove(f'{tools}/temp.docx')
+    os.remove(f'{tools}/temp.pdf')
 
-    return files['filename']
+    return f"{tools}/{files['filename']}"
