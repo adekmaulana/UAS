@@ -3,7 +3,7 @@ import datetime
 from random import sample
 from time import sleep
 from avalon.helper.manager import get_item, update_item
-from avalon.tools import rupiah_format, windows, delete_last_lines, clear
+from avalon.tools import rupiah_format, windows, delete_last_lines, clear, Lagi
 from avalon.tools.subprocess import Command
 from avalon.tools.data2docx import merge
 from avalon.tools.pdf2png import run
@@ -98,14 +98,25 @@ def main():
         # Kurangi stock pada database ketika logika di atas sudah terpenuhi
         update_item(boxer, ukuran.upper(), banyak_beli)
         print()
-        lagi = input("Tambah barang lagi? '[Y/N]': ")
-        if lagi.upper() == "Y":
+        lagi = None
+        try:
+            while lagi not in ['Y', 'N']:
+                lagi = input("Tambah barang lagi? '[Y/N]': ")
+                if lagi.upper() == "Y":
+                    raise Lagi
+                elif lagi.upper() == "N":
+                    break
+                else:
+                    print('Jawaban anda di luar pertanyaan')
+                    sleep(2.5)
+                    clear()
+                    continue
+        except Lagi:
+            # lagi = Y
             clear()
             continue
-        elif lagi.upper() == "N":
-            break
         else:
-            print('Jawaban anda diluar pertanyaan')
+            # lagi = N
             break
     clear()
     d = datetime.datetime.now()

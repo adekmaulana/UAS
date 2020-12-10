@@ -10,6 +10,10 @@ if os.name == 'nt':
     windows = True
 
 
+class Lagi(Exception):
+    pass
+
+
 def clear():
     print("\n" * get_terminal_size().lines, end='')
 
