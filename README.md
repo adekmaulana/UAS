@@ -24,4 +24,4 @@ python -m avalon
 
 ### Output
 
-<img src="https://raw.githubusercontent.com/adekmaulana/UAS/main/receipt.png" width="400px">
+<img src="https://raw.githubusercontent.com/adekmaulana/UAS/main/output.png" width="400px">
