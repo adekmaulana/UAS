@@ -2,6 +2,7 @@ import datetime
 
 from random import sample
 from time import sleep
+from typing import List
 from avalon.helper.manager import get_item, update_item
 from avalon.tools import rupiah_format, windows, delete_last_lines, clear, Lagi
 from avalon.tools.subprocess import Command
@@ -46,11 +47,11 @@ def cetak_katalog():
 
 
 def main():
-    jumlah_beli = 0
-    list_boxer = []
-    list_harga = []
-    list_banyak = []
-    list_ukuran = []
+    jumlah_beli: int = 0
+    list_boxer: List[str] = []
+    list_harga: List[int] = []
+    list_banyak: List[int] = []
+    list_ukuran: List[str] = []
 
     while True:
         cetak_katalog()
@@ -127,8 +128,8 @@ def main():
     print(f"{d:%d}/{d:%m}/{d:%y} {d:%I}:{d:%M}:{d:%S} {d:%p}\t  ORDER: {order}")
     print()
 
-    total_bayar = []
-    list_belanja = []
+    total_bayar: List[int] = []
+    list_belanja: List[str] = []
 
     for i in range(jumlah_beli):
         list_belanja.append(
@@ -185,7 +186,7 @@ def main():
     print(f"\tCHANGE\t\t| {kembali}")
     print()
 
-    data = [raw_total, tax, total, uang_bayar, uang_bayar - total]
+    data: List[int, ...] = [raw_total, tax, total, uang_bayar, uang_bayar - total]
 
     ans = input("Cetak struk belanja? '[Y/N]': ")
     if ans.upper() == "Y":

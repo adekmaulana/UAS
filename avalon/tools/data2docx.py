@@ -1,18 +1,20 @@
 import datetime
 
+from typing import List, Union
 from docx import Document
 from docx.shared import Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from avalon.tools import windows, rupiah_format
 
 
-WINDOWS = ['CodeNewRoman NF', 10]
-LINUX = ['CodeNewRoman Nerd Font Mono', 11]
+WINDOWS: Union[str, int] = ['CodeNewRoman NF', 10]
+LINUX: Union[str, int] = ['CodeNewRoman Nerd Font Mono', 11]
+document: Document
 
 
-def parse_data(d: datetime.datetime, no: list) -> None:
-    order = f"#AV{no[0]}{no[1]}{no[2]}"
-    cells_text = [
+def parse_data(d: datetime.datetime, no: List[int]) -> None:
+    order: str = f"#AV{no[0]}{no[1]}{no[2]}"
+    cells_text: List[str, str] = [
         f"{d:%d}/{d:%m}/{d:%y} {d:%I}:{d:%M}:{d:%S} {d:%p}",
         f"{order}"
     ]
@@ -38,8 +40,11 @@ def parse_data(d: datetime.datetime, no: list) -> None:
     return document.save('avalon/tools/temp.docx')
 
 
-def parse_order(list_belanja: list, total_bayar: list, data: list) -> None:
-    TEXT = ["SUBTOTAL", "PPN 10%", "TOTAL", "UANG", "CHANGE"]
+def parse_order(list_belanja: List[str],
+                total_bayar: List[int],
+                data: List[int]) -> None:
+    TEXT: List[str, ...] = ["SUBTOTAL", "PPN 10%", "TOTAL", "UANG", "CHANGE"]
+    right = WD_ALIGN_PARAGRAPH.RIGHT
 
     document = Document('avalon/tools/temp.docx')
     table = document.tables[2]
@@ -64,7 +69,7 @@ def parse_order(list_belanja: list, total_bayar: list, data: list) -> None:
                     font.size = Pt(LINUX[1])
                 font.bold = True
                 if i == 0:
-                    paragraph.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+                    paragraph.paragraph_format.alignment = right
                     run.text = list_belanja[index]
                 elif i == 1:
                     run.text = rupiah_format(total_bayar[index])
@@ -86,7 +91,7 @@ def parse_order(list_belanja: list, total_bayar: list, data: list) -> None:
                     font.size = Pt(LINUX[1])
                 font.bold = True
                 if index == 0:
-                    paragraph.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+                    paragraph.paragraph_format.alignment = right
                     run.text = TEXT[i - j]
                 elif index == 1:
                     run.text = rupiah_format(data[i - j])
@@ -96,9 +101,9 @@ def parse_order(list_belanja: list, total_bayar: list, data: list) -> None:
 
 
 def merge(d: datetime.datetime,
-          no: list,
-          list_belanja: list,
-          total_bayar: list,
-          data: list) -> None:
+          no: List[int],
+          list_belanja: List[str],
+          total_bayar: List[int],
+          data: List[int]) -> None:
     parse_data(d, no)
     parse_order(list_belanja, total_bayar, data)

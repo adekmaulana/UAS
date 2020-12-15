@@ -6,8 +6,8 @@ import pathlib
 from alive_progress import alive_bar
 from avalon import API_KEY
 from avalon.tools import windows, suppress_stdout
-from avalon.tools.docx2pdf import convert
-from avalon.tools.subprocess import Command
+from .docx2pdf import convert
+from .subprocess import Command
 
 
 def run() -> typing.Union[str, pathlib.Path]:
